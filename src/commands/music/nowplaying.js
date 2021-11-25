@@ -12,7 +12,7 @@ module.exports = {
         category: 'music',
         isPlayed: true,
         isVoiceConnected: false,
-        isVoiceConnectedBotSame: false,
+
     },
 
     data: new SlashCommandBuilder(),
