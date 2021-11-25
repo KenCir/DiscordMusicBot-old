@@ -9,7 +9,7 @@ const MusicBot = require('../../MusicBot');
 module.exports = async (client, queue) => {
     try {
         client.logger.info(`${queue.guild.name}(ID: ${queue.guild.id})のキューが破壊されました`);
-        client.user.setActivity(`${process.env.PREFIX}help おうち鯖`, { type: 'LISTENING' });
+        client.user.setActivity(`${process.env.PREFIX}help`, { type: 'LISTENING' });
         await queue.data.channel.send('再生を停止してVCから退出しました');
     }
     catch (error) {
