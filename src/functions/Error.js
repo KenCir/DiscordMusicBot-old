@@ -20,7 +20,7 @@ module.exports = {
                 content: codeBlock(error.stack),
                 avatarURL: client.user.avatarURL({ format: 'webp' }),
                 username: `${client.user.username}-エラーログ`,
-            }).catch(client.logger.error);
+            }).catch(err => client.logger.error(err));
 
             await interaction.followUp(`コマンド実行中にエラーが発生しました\n${error.name}\n${error.message}`);
         }
@@ -47,7 +47,7 @@ module.exports = {
                 content: `${userMention(process.env.OWNERID)}\n${codeBlock(error.stack)}`,
                 avatarURL: client.user.avatarURL({ format: 'webp' }),
                 username: `${client.user.username}-エラーログ`,
-            }).catch(client.logger.error);
+            }).catch(err => client.logger.error(err));
 
             await message.reply(`コマンド実行中にエラーが発生しました\n${error.name}\n${error.message}`);
         }
