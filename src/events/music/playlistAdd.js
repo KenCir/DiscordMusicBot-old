@@ -19,7 +19,7 @@ module.exports = async (client, queue, playlist) => {
             embeds: [
                 new MessageEmbed()
                     .setTitle('追加された曲')
-                    .setDescription(playlist.songs.map(song => `${hyperlink(song.name, song.url)}`).join('\n'))
+                    .setDescription((playlist.songs.map(song => `${hyperlink(song.name, song.url)}`).join('\n')).length > 4096 ? '文字数が4096文字を超過しているため表示できません' : playlist.songs.map(song => `${hyperlink(song.name, song.url)}`).join('\n'))
                     .setColor('RANDOM')
                     .setTimestamp(),
             ],

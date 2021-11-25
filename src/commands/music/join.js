@@ -5,9 +5,9 @@ const MusicBot = require('../../MusicBot');
 
 module.exports = {
     info: {
-        name: 'playlist',
-        description: 'キューにプレイリストを追加する',
-        usage: 'playlist [URL]',
+        name: 'join',
+        description: 'VCに参加します',
+        usage: 'join',
         aliases: [],
         category: 'music',
         isPlayed: false,
@@ -31,7 +31,6 @@ module.exports = {
      */
     run_message: async function (client, message, args) {
         try {
-            if (!args[0]) return await message.reply('引数にキューに追加する再生リストのURLを入れてください');
             const queue = client.player.getQueue(message.guild.id) || client.player.createQueue(message.guild.id, {
                 data: {
                     channel: message.channel,
@@ -47,7 +46,9 @@ module.exports = {
                 });
                 await message.reply(`${channelMention(message.channelId)}をコマンドチャンネルに設定しました`);
             }
-            await queue.playlist(args.join(' '));
+            else {
+                await message.reply('既にVC接続済みです');
+            }
         }
         catch (error) {
             CommandError_Message(client, message, error);

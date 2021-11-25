@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, channelMention } = require('@discordjs/builders');
 const { CommandInteraction, Message } = require('discord.js');
 const { CommandError_Message } = require('../../functions/Error');
 const MusicBot = require('../../MusicBot');
@@ -32,13 +32,22 @@ module.exports = {
     run_message: async function (client, message, args) {
         try {
             if (!args[0]) return await message.reply('引数にキューに追加する曲名かURLを入れてください');
-            const queue = client.player.createQueue(message.guild.id, {
+            const queue = client.player.getQueue(message.guild.id) || client.player.createQueue(message.guild.id, {
                 data: {
                     channel: message.channel,
                 },
             });
-            await queue.join(message.member.voice.channel);
-            const song = await queue.play(args.join(' '));
+            if (!queue.connection) {
+                await queue.join(message.member.voice.channel);
+                await message.reply(`${channelMention(message.member.voice.channelId)}に接続しました\n${channelMention(message.channelId)}をコマンドチャンネルに設定しました`);
+            }
+            else if (queue.data.channel.id !== message.channelId) {
+                queue.setData({
+                    channel: message.channel,
+                });
+                await message.reply(`${channelMention(message.channelId)}をコマンドチャンネルに設定しました`);
+            }
+            await queue.play(args.join(' '));
         }
         catch (error) {
             CommandError_Message(client, message, error);

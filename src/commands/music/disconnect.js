@@ -5,12 +5,12 @@ const MusicBot = require('../../MusicBot');
 
 module.exports = {
     info: {
-        name: 'skip',
-        description: '再生中の曲をスキップする',
-        usage: 'skip',
-        aliases: ['s'],
+        name: 'disconnect',
+        description: '再生を停止してVCから退出します',
+        usage: 'disconnect',
+        aliases: ['dc'],
         category: 'music',
-        isPlayed: true,
+        isPlayed: false,
         isVoiceConnected: true,
     },
 
@@ -31,11 +31,9 @@ module.exports = {
      */
     run_message: async function (client, message, args) {
         try {
-            if (!message.member.voice.channel) return await message.reply('ボイスチャンネルに参加していないとこのコマンドは使用できません');
-            const queue = client.player.getQueue(message.guild.id);
-            if (!queue.isPlaying) return await message.reply('このコマンドは曲が再生中でないと使用できません');
-            queue.skip();
-            await message.reply('再生中の曲をスキップしました');
+            const queue = client.player.getQueue(message.guildId);
+            if (!queue || !queue.connection) return await message.reply('このコマンドはBotがVCに参加していないと使用できません');
+            queue.destroy(true);
         }
         catch (error) {
             CommandError_Message(client, message, error);
