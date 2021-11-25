@@ -1,14 +1,15 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { RepeatMode } = require('discord-music-player');
 const { CommandInteraction, Message } = require('discord.js');
 const { CommandError_Message } = require('../../functions/Error');
 const MusicBot = require('../../MusicBot');
 
 module.exports = {
     info: {
-        name: 'skip',
-        description: '再生中の曲をスキップする',
-        usage: 'skip',
-        aliases: ['s'],
+        name: 'queueloop',
+        description: 'キューを表示する',
+        usage: 'queueloop',
+        aliases: ['qloop'],
         category: 'music',
         isPlayed: true,
         isVoiceConnected: true,
@@ -31,11 +32,15 @@ module.exports = {
      */
     run_message: async function (client, message, args) {
         try {
-            if (!message.member.voice.channel) return await message.reply('ボイスチャンネルに参加していないとこのコマンドは使用できません');
-            const queue = client.player.getQueue(message.guild.id);
-            if (!queue.isPlaying) return await message.reply('このコマンドは曲が再生中でないと使用できません');
-            queue.skip();
-            await message.reply('再生中の曲をスキップしました');
+            const queue = client.player.getQueue(message.guildId);
+            if (queue.repeatMode !== RepeatMode.QUEUE) {
+                queue.setRepeatMode(RepeatMode.QUEUE);
+                await message.reply('キューをループ再生します');
+            }
+            else {
+                queue.setRepeatMode(RepeatMode.DISABLED);
+                await message.reply('キューのループ再生を解除しました');
+            }
         }
         catch (error) {
             CommandError_Message(client, message, error);

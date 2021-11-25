@@ -21,7 +21,7 @@ module.exports = async (client, queue, newSong, oldSong) => {
                     .addField('タイトル', newSong.name)
                     .addField('チャンネル名', newSong.author)
                     .addField('曲の長さ', newSong.duration)
-                    .addField('URL', newSong.url)
+                    .setURL(newSong.url)
                     .setImage(newSong.thumbnail)
                     .setColor('RANDOM')
                     .setTimestamp(),
