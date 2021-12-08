@@ -20,6 +20,6 @@
     "log4js": "^6.3.0"
   },
   "devDependencies": {
-    "eslint": "^8.3.0"
+    "eslint": "^8.4.1"
   }
 }
