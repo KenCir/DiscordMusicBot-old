@@ -47,7 +47,14 @@ module.exports = {
                 });
                 await message.reply(`${channelMention(message.channelId)}をコマンドチャンネルに設定しました`);
             }
-            await queue.play(args.join(' '));
+
+
+            try {
+                await queue.play(args.join(' '));
+            }
+            catch (error) {
+                await queue.playlist(args.join(' '));
+            }
         }
         catch (error) {
             CommandError_Message(client, message, error);

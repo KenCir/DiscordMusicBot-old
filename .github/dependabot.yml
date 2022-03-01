@@ -9,4 +9,6 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
-    target-branch: "develop"
+    reviewers:
+      - "KenCir"
+    open-pull-requests-limit: 50
