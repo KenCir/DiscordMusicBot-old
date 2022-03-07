@@ -57,7 +57,7 @@ module.exports = {
                 .catch(() => queue.playlist(args.join(' '), {
                     requestedBy: message.author,
                 }))
-                .catch(err => async () => await message.channel.send(`曲が見つかりませんでした、存在しないURL・再生リストを指定していませんか？\n\n${err.stack}`));
+                .catch(async err => await message.channel.send(`曲が見つかりませんでした、存在しないURL・再生リストを指定していませんか？\n\n${err.stack}`));
         }
         catch (error) {
             commandError_Message(client, message, error);
