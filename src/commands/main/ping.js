@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { CommandInteraction, Message } = require('discord.js');
-const { CommandError_Message } = require('../../functions/Error');
+const { commandError_Message } = require('../../functions/error');
 const MusicBot = require('../../MusicBot');
 
 module.exports = {
@@ -35,7 +35,7 @@ module.exports = {
             await msg.edit(`APIPing: ${msg.createdTimestamp - message.createdTimestamp}ms\nWebSocketPing: ${client.ws.ping}ms\nメモリ使用率: ${Math.round(process.memoryUsage().rss / 1024 / 1024 * 100) / 100}MB`);
         }
         catch (error) {
-            CommandError_Message(client, message, error);
+            commandError_Message(client, message, error);
         }
     },
 };

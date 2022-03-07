@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { RepeatMode } = require('discord-music-player');
 const { CommandInteraction, Message } = require('discord.js');
-const { CommandError_Message } = require('../../functions/Error');
+const { commandError_Message } = require('../../functions/error');
 const MusicBot = require('../../MusicBot');
 
 module.exports = {
@@ -31,14 +32,17 @@ module.exports = {
      */
     run_message: async function (client, message, args) {
         try {
-            if (!message.member.voice.channel) return await message.reply('ボイスチャンネルに参加していないとこのコマンドは使用できません');
-            const queue = client.player.getQueue(message.guild.id);
-            if (!queue.isPlaying) return await message.reply('このコマンドは曲が再生中でないと使用できません');
+            const queue = client.player.getQueue(message.guildId);
+            if (queue.repeatMode === RepeatMode.SONG) {
+                queue.setRepeatMode(RepeatMode.DISABLED);
+                queue.data.skipLoop = true;
+            }
+
             queue.skip();
             await message.reply('再生中の曲をスキップしました');
         }
         catch (error) {
-            CommandError_Message(client, message, error);
+            commandError_Message(client, message, error);
         }
     },
 };

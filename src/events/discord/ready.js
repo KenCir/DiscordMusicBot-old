@@ -1,4 +1,4 @@
-const { ErrorLog } = require('../../functions/Error');
+const { errorLog } = require('../../functions/error');
 const MusicBot = require('../../MusicBot');
 
 /**
@@ -11,6 +11,6 @@ module.exports = async (client) => {
         client.user.setActivity(`${process.env.PREFIX}help`, { type: 'LISTENING' });
     }
     catch (error) {
-        ErrorLog(client, error);
+        errorLog(client, error);
     }
 };

@@ -1,6 +1,8 @@
 const { Queue } = require('discord-music-player');
-const { ErrorLog } = require('../../functions/Error');
+const { errorLog } = require('../../functions/error');
 const MusicBot = require('../../MusicBot');
+const emojis = require('../../../dat/emojis.json');
+const { formatEmoji } = require('@discordjs/builders');
 
 /**
  * @param {MusicBot} client
@@ -10,9 +12,15 @@ module.exports = async (client, queue) => {
     try {
         client.logger.info(`${queue.guild.name}(ID: ${queue.guild.id})のキューが破壊されました`);
         client.user.setActivity(`${process.env.PREFIX}help`, { type: 'LISTENING' });
-        await queue.data.channel.send('再生を停止してVCから退出しました');
+        await queue.data.channel.send(`${formatEmoji(emojis.donatu)}再生を停止してVCから退出しました`);
+
+        if (queue.data.playMsg) {
+            await queue.data.playMsg.delete();
+        }
+
+        queue.data.playMsg = null;
     }
     catch (error) {
-        ErrorLog(client, error);
+        errorLog(client, error);
     }
 };

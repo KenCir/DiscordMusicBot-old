@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { CommandInteraction, Message } = require('discord.js');
 const { readdirSync } = require('fs');
-const { CommandError_Message } = require('../../functions/Error');
+const { commandError_Message } = require('../../functions/error');
 const MusicBot = require('../../MusicBot');
 
 module.exports = {
@@ -49,7 +49,7 @@ module.exports = {
             await msg.edit(`合計${client.commands.size}個のコマンドを再読み込みしました`);
         }
         catch (error) {
-            CommandError_Message(client, message, error);
+            commandError_Message(client, message, error);
         }
     },
 };

@@ -11,7 +11,7 @@ module.exports = {
      * @param {Error} error
      */
 
-    CommandError: async function (client, interaction, error) {
+    commandError: async function (client, interaction, error) {
         client.logger.error(error.stack);
         try {
             if (!client.isReady()) return;
@@ -36,7 +36,7 @@ module.exports = {
      * @param {Error} error
      */
 
-    CommandError_Message: async function (client, message, error) {
+    commandError_Message: async function (client, message, error) {
         try {
             // 出力する必要のないエラーは省略
             if (error.message === 'Collector received no interactions before ending with reason: time') return;
@@ -62,7 +62,7 @@ module.exports = {
      * @param {Error} error
      */
 
-    ErrorLog: async function (client, error) {
+    errorLog: async function (client, error) {
         client.logger.error(error.stack);
         try {
             if (!client.isReady()) return;

@@ -1,6 +1,6 @@
 const { Song, Queue } = require('discord-music-player');
 const MusicBot = require('../../MusicBot');
-const { ErrorLog } = require('../../functions/Error');
+const { errorLog } = require('../../functions/error');
 const { MessageEmbed } = require('discord.js');
 
 /**
@@ -11,6 +11,15 @@ const { MessageEmbed } = require('discord.js');
 module.exports = async (client, queue, newSong) => {
     try {
         client.logger.info(`${newSong.name} ${newSong.url} の再生を開始しましました`);
+
+        /*
+        if (newSong.milliseconds >= 3600000) {
+            queue.skip();
+            await queue.data.channel.send('曲が一時間を超えていたためスキップされました');
+            return;
+        }
+        */
+
         const msg = await queue.data.channel.send({
             embeds: [
                 new MessageEmbed()
@@ -24,10 +33,11 @@ module.exports = async (client, queue, newSong) => {
                     .setTimestamp(),
             ],
         });
-        client.startmsgs.set(queue.guild.id, msg.id);
+
+        queue.data.playMsg = msg;
         client.user.setActivity(newSong.name, { type: 'LISTENING' });
     }
     catch (error) {
-        ErrorLog(client, error);
+        errorLog(client, error);
     }
 };

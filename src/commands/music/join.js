@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, channelMention } = require('@discordjs/builders');
 const { CommandInteraction, Message } = require('discord.js');
-const { CommandError_Message } = require('../../functions/Error');
+const { commandError_Message } = require('../../functions/error');
 const MusicBot = require('../../MusicBot');
 
 module.exports = {
@@ -34,6 +34,8 @@ module.exports = {
             const queue = client.player.getQueue(message.guild.id) || client.player.createQueue(message.guild.id, {
                 data: {
                     channel: message.channel,
+                    playMsg: null,
+                    skipLoop: false,
                 },
             });
             if (!queue.connection) {
@@ -41,9 +43,7 @@ module.exports = {
                 await message.reply(`${channelMention(message.member.voice.channelId)}に接続しました\n${channelMention(message.channelId)}をコマンドチャンネルに設定しました`);
             }
             else if (queue.data.channel.id !== message.channelId) {
-                queue.setData({
-                    channel: message.channel,
-                });
+                queue.channel = message.channel;
                 await message.reply(`${channelMention(message.channelId)}をコマンドチャンネルに設定しました`);
             }
             else {
@@ -51,7 +51,7 @@ module.exports = {
             }
         }
         catch (error) {
-            CommandError_Message(client, message, error);
+            commandError_Message(client, message, error);
         }
     },
 };

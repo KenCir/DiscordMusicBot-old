@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, channelMention } = require('@discordjs/builders');
 const { CommandInteraction, Message } = require('discord.js');
-const { CommandError_Message } = require('../../functions/Error');
+const { commandError_Message } = require('../../functions/error');
 const MusicBot = require('../../MusicBot');
 
 module.exports = {
@@ -35,6 +35,8 @@ module.exports = {
             const queue = client.player.getQueue(message.guild.id) || client.player.createQueue(message.guild.id, {
                 data: {
                     channel: message.channel,
+                    playMsg: null,
+                    skipLoop: false,
                 },
             });
             if (!queue.connection) {
@@ -49,15 +51,16 @@ module.exports = {
             }
 
 
-            try {
-                await queue.play(args.join(' '));
-            }
-            catch (error) {
-                await queue.playlist(args.join(' '));
-            }
+            queue.play(args.join(' '), {
+                requestedBy: message.author,
+            })
+                .catch(() => queue.playlist(args.join(' '), {
+                    requestedBy: message.author,
+                }))
+                .catch(async () => await message.channel.send('曲が見つかりませんでした、存在しないURL・再生リストを指定していませんか？'));
         }
         catch (error) {
-            CommandError_Message(client, message, error);
+            commandError_Message(client, message, error);
         }
     },
 };

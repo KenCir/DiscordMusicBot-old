@@ -1,8 +1,9 @@
 const { Playlist, Queue } = require('discord-music-player');
 const { MessageEmbed } = require('discord.js');
-const { hyperlink } = require('@discordjs/builders');
+const { hyperlink, formatEmoji } = require('@discordjs/builders');
 const MusicBot = require('../../MusicBot');
-const { ErrorLog } = require('../../functions/Error');
+const { errorLog } = require('../../functions/error');
+const emojis = require('../../../dat/emojis.json');
 
 /**
  * @param {MusicBot} client
@@ -14,8 +15,9 @@ module.exports = async (client, queue, playlist) => {
         client.logger.info(`キューにプレイリスト ${playlist.name}、合計${playlist.songs.length}曲が追加されました\n${playlist.url}`);
         client.logger.info('追加された曲');
         for (const song of playlist.songs) client.logger.info(`${song.name} ${song.url}`);
+
         await queue.data.channel.send({
-            content: `キューにプレイリスト${playlist.name}、合計${playlist.songs.length}曲が追加されました\n${playlist.url}`,
+            content: `${formatEmoji(emojis.sorena)}キューにプレイリスト${playlist.name}、合計${playlist.songs.length}曲が追加されました\n${playlist.url}`,
             embeds: [
                 new MessageEmbed()
                     .setTitle('追加された曲')
@@ -26,6 +28,6 @@ module.exports = async (client, queue, playlist) => {
         });
     }
     catch (error) {
-        ErrorLog(client, error);
+        errorLog(client, error);
     }
 };

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, codeBlock } = require('@discordjs/builders');
 const { CommandInteraction, Message, MessageActionRow, MessageButton } = require('discord.js');
 const { inspect } = require('util');
-const { CommandError_Message } = require('../../functions/Error');
+const { commandError_Message } = require('../../functions/error');
 const MusicBot = require('../../MusicBot');
 
 module.exports = {
@@ -38,11 +38,11 @@ module.exports = {
                 .addComponents(
                     new MessageButton()
                         .setCustomId('ok')
-                        .setEmoji('810436146718441483')
+                        .setEmoji('881574101041442887')
                         .setStyle('PRIMARY'),
                     new MessageButton()
                         .setCustomId('no')
-                        .setEmoji('810436146978619392')
+                        .setEmoji('881574101444083742')
                         .setStyle('PRIMARY'),
                 );
 
@@ -83,7 +83,7 @@ module.exports = {
             }
         }
         catch (error) {
-            CommandError_Message(client, message, error);
+            commandError_Message(client, message, error);
         }
     },
 };
