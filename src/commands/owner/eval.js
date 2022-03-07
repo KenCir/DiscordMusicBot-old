@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, codeBlock } = require('@discordjs/builders');
-const { CommandInteraction, Message, MessageActionRow, MessageButton } = require('discord.js');
+const { CommandInteraction, Message, MessageActionRow, MessageButton, MessageAttachment } = require('discord.js');
 const { inspect } = require('util');
 const { commandError_Message } = require('../../functions/error');
 const MusicBot = require('../../MusicBot');
@@ -67,8 +67,11 @@ module.exports = {
                     }
                     else {
                         await response2.update({
-                            content: '実行結果が2000文字を超えているため送信出来ません',
+                            content: '実行結果が2000文字を超えているためファイル出力しました',
                             components: [],
+                            attachments: [
+                                new MessageAttachment(inspect(evaled), 'evaled.txt'),
+                            ],
                         });
                     }
                 }
