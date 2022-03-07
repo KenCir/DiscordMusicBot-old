@@ -1,6 +1,6 @@
 const { MessageActionRow, MessageButton, MessageAttachment } = require('discord.js');
 const { SlashCommandBuilder, codeBlock } = require('@discordjs/builders');
-const { errorlog, commanderror_message } = require('../../functions/error');
+const { errorlog, commanderror_message, commandError_Message } = require('../../functions/error');
 const emojis = require('../../../dat/emojis.json');
 const { execSync } = require('child_process');
 
@@ -117,13 +117,13 @@ module.exports = {
             else if (response2.customId === 'ok') {
                 const stdout = execSync(args.join(' '));
                 if (stdout.toString().length <= 2000) {
-                    await msg.edit({
+                    await response2.update({
                         content: codeBlock(stdout.toString()),
                         components: [],
                     });
                 }
                 else {
-                    await msg.edit({
+                    await response2.update({
                         content: '実行結果が2000文字を超えているためファイルに出力しました',
                         components: [],
                         attachments: [
@@ -134,7 +134,7 @@ module.exports = {
             }
         }
         catch (error) {
-            commanderror_message(client, message, error);
+            commandError_Message(client, message, error);
         }
     },
 };
