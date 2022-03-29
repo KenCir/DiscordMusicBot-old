@@ -51,10 +51,11 @@ module.exports = {
             }
 
 
-            queue.play(args.join(' '), {
+            queue.play(args.join(' ') + '&bpctr=9999999999', {
                 requestedBy: message.author,
+                timecode: true,
             })
-                .catch(() => queue.playlist(args.join(' '), {
+                .catch(() => queue.playlist(args.join(' ') + '&bpctr=9999999999', {
                     requestedBy: message.author,
                 }))
                 .catch(async err => await message.channel.send(`曲が見つかりませんでした、存在しないURL・再生リストを指定していませんか？\n\n${err.stack}`));
